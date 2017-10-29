@@ -1,0 +1,8 @@
+
+###> symfony/framework-bundle ###
+.env
+src/UI/API/Public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+.idea/

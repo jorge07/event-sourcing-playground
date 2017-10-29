@@ -1,0 +1,8 @@
+ping:
+  path: /api/ping
+  defaults: { _controller: 'Leos\UI\API\Controller\Monitor\Ping:__invoke' }
+
+sign_up:
+  path: /api/user
+  methods: [ 'POST' ]
+  defaults: { _controller: 'Leos\UI\API\Controller\User\SignUp:__invoke' }

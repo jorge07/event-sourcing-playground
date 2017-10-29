@@ -1,0 +1,63 @@
+{
+    "type": "project",
+    "license": "proprietary",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1",
+        "beberlei/assert": "^2.7",
+        "moneyphp/money": "^3.0",
+        "prooph/event-sourcing": "^5.2",
+        "ramsey/uuid": "^3.7",
+        "symfony/console": "^3.3",
+        "symfony/flex": "^1.0",
+        "symfony/framework-bundle": "^3.3",
+        "symfony/yaml": "^3.3"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^0.8.5",
+        "phpunit/phpunit": "^6.4",
+        "symfony/browser-kit": "3.3.10",
+        "symfony/dotenv": "^4.0",
+        "liuggio/fastest": "~1.4",
+        "symfony/profiler-pack": "^1.0"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Leos\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Leos\\": "tests/"
+        }
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ],
+        "test": "vendor/phpunit/phpunit/phpunit",
+        "test-parallel": "find tests/ -name '*Test.php' | ./vendor/liuggio/fastest/fastest -x phpunit.xml.dist 'vendor/phpunit/phpunit/phpunit {};'"
+
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "id": "01BXFPQAV4C6VBNPHANYSSSDQF",
+            "allow-contrib": false
+        }
+    }
+}
