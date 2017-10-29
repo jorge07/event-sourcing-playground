@@ -27,7 +27,7 @@ class SignUpTest extends WebTestCase
             'email' => 'j@j.com'
         ]);
 
-        self::assertEquals(200, $this->client->getResponse()->getStatusCode());
+        self::assertEquals(201, $this->client->getResponse()->getStatusCode());
         self::assertContains('uuid', $this->client->getResponse()->getContent());
         self::assertContains('username', $this->client->getResponse()->getContent());
         self::assertContains('jorge', $this->client->getResponse()->getContent());

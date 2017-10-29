@@ -8,6 +8,7 @@ use Leos\Domain\User\ValueObject\UserId;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SignUp
 {
@@ -31,10 +32,13 @@ class SignUp
 
         $this->handler->__invoke($command);
 
-        return JsonResponse::create([
-            'uuid' => $command->uuid->toString(),
-            'username' => $command->username->__toString(),
-            'email' => $command->email->__toString()
-        ]);
+        return JsonResponse::create(
+            [
+                'uuid' => $command->uuid->toString(),
+                'username' => $command->username->__toString(),
+                'email' => $command->email->__toString()
+            ],
+            Response::HTTP_CREATED
+        );
     }
 }
