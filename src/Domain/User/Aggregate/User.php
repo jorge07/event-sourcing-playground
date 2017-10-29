@@ -33,11 +33,6 @@ class User extends AggregateRoot
      */
     private $signUpAt;
 
-    protected function __construct()
-    {
-        $this->signUpAt = new \DateTimeImmutable();
-    }
-
     public static function create(UserId $userId, Username $username, Email $email): self
     {
         $user = new self();
@@ -82,6 +77,7 @@ class User extends AggregateRoot
 
         $this->setEmail($userWasCreated->email());
         $this->setUsername($userWasCreated->username());
+        $this->signUpAt = new \DateTimeImmutable();
     }
 
     public function whenUserEmailWasChanged(UserEmailWasChanged $userEmailWasChanged): void

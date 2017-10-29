@@ -1,7 +1,8 @@
 <?php
 
-namespace Leos\Domain\User\Event;
+namespace Tests\Leos\Domain\User\Event;
 
+use Leos\Domain\User\Event\UserEmailWasChanged;
 use Leos\Domain\User\ValueObject\Email;
 use Leos\Domain\User\ValueObject\UserId;
 use PHPUnit\Framework\TestCase;

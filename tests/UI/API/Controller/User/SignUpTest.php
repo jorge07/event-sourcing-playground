@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SignUpTest extends WebTestCase
 {
-    /** @var Client */
+    /** @var Client|null */
     private $client;
 
     public function setUp()
