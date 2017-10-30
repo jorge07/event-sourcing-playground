@@ -1,0 +1,5 @@
+{
+    "prooph/pdo-event-store": {
+        "version": "1.5-dev"
+    }
+}

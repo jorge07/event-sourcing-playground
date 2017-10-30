@@ -13,9 +13,14 @@ class UserWasCreatedTest extends TestCase
 
     public function testCreatedEventShouldExposeUsernameAndEmail()
     {
-        $event = UserWasCreated::with(UserId::new(), $username = new Username('jorge'), $email = new Email('j@j.com'));
+        $event = UserWasCreated::with(
+            UserId::new(),
+            $username = new Username('jorge'),
+            $email = new Email('j@j.com'),
+            new \DateTimeImmutable()
+        );
 
-        self::assertSame($username, $event->username());
-        self::assertSame($email, $event->email());
+        self::assertEquals($username, $event->username());
+        self::assertEquals($email, $event->email());
     }
 }

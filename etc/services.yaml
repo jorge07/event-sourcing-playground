@@ -1,5 +1,15 @@
 parameters:
 
+    event_store_host: "%env(EVENT_STORE_HOST)%"
+    event_store_db: "%env(EVENT_STORE_DB)%"
+    event_store_user: "%env(EVENT_STORE_USER)%"
+    event_store_pass: "%env(EVENT_STORE_PASS)%"
+
+    env(EVENT_STORE_HOST): mysql
+    env(EVENT_STORE_DB): ddd
+    env(EVENT_STORE_USER): root
+    env(EVENT_STORE_PASS): root
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -7,14 +17,43 @@ services:
         autoconfigure: true
         public: false
 
+######    Application    ######
+
+    Leos\Application\:
+        resource: '../src/Application/**/*Handler'
+
+######  Infrastructure   ######
+
+    Leos\Infrastructure\Persistence\EventStore\MysqlEventStoreConfig:
+        arguments:
+          - "%event_store_host%"
+          - "%event_store_user%"
+          - "%event_store_pass%"
+          - "%event_store_db%"
+          - "event_stream"
+
+    Leos\Infrastructure\Persistence\EventStore\EventStoreWrapper:
+        public: true
+
+    Leos\Domain\User\Repository\UserRepositoryInterface: '@Leos\Infrastructure\User\Persistence\UserRepository'
+
+    Leos\Infrastructure\:
+        resource: '../src/Infrastructure/*/Persistence/'
+        public: true
+
+######        UI         ######
+
     Leos\UI\API\Controller\:
         resource: '../src/UI/API/Controller'
         tags: ['controller.service_arguments']
 
-    Leos\Application\:
-        resource: '../src/Application/**/*Handler'
-        tags: ['bus.handler']
 
     Leos\UI\API\EventListener\ExceptionListener:
         tags:
           - { name: kernel.event_listener, event: kernel.exception }
+
+
+    Leos\UI\Cli\:
+        resource: '../src/UI/Cli/**/*Command'
+        tags:
+              - { name: "console.command" }

@@ -13,6 +13,6 @@ class UserEmailWasChangedTest extends TestCase
     {
         $event = UserEmailWasChanged::with(UserId::new(), $email = new Email('j@j.com'));
 
-        self::assertSame($email, $event->email());
+        self::assertEquals($email, $event->email());
     }
 }

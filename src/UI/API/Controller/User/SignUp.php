@@ -32,13 +32,6 @@ class SignUp
 
         $this->handler->__invoke($command);
 
-        return JsonResponse::create(
-            [
-                'uuid' => $command->uuid->toString(),
-                'username' => $command->username->__toString(),
-                'email' => $command->email->__toString()
-            ],
-            Response::HTTP_CREATED
-        );
+        return JsonResponse::create($command, Response::HTTP_CREATED);
     }
 }

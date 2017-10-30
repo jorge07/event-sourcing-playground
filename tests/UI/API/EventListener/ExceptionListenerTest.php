@@ -1,16 +1,16 @@
 <?php
 
 namespace Tests\Leos\UI\API\EventListener;
-;
+
 use Leos\Domain\Shared\Exception\ConflictException;
 use Leos\UI\API\EventListener\ExceptionListener;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-class ExceptionListenerTest extends WebTestCase
+class ExceptionListenerTest extends KernelTestCase
 {
     protected function setUp()
     {

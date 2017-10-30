@@ -1,3 +1,0 @@
-ping:
-    path: /api/ping
-    defaults: { _controller: 'Leos\UI\API\Controller\Monitor\Ping::__invoke' }

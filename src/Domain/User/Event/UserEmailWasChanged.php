@@ -12,7 +12,7 @@ class UserEmailWasChanged extends AggregateChanged
     {
         /** @var self $event */
         $event = self::occur($userId->toString(), [
-            'email' => $email
+            'email' => $email->__toString()
         ]);
 
         return $event;
@@ -20,6 +20,6 @@ class UserEmailWasChanged extends AggregateChanged
 
     public function email(): Email
     {
-        return $this->payload['email'];
+        return new Email($this->payload['email']);
     }
 }

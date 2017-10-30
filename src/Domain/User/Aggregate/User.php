@@ -38,7 +38,7 @@ class User extends AggregateRoot
         $user = new self();
 
         $user->recordThat(
-            UserWasCreated::with($userId, $username, $email)
+            UserWasCreated::with($userId, $username, $email, new \DateTimeImmutable())
         );
 
         return $user;
@@ -77,7 +77,7 @@ class User extends AggregateRoot
 
         $this->setEmail($userWasCreated->email());
         $this->setUsername($userWasCreated->username());
-        $this->signUpAt = new \DateTimeImmutable();
+        $this->signUpAt = $userWasCreated->signUpAt();
     }
 
     public function whenUserEmailWasChanged(UserEmailWasChanged $userEmailWasChanged): void

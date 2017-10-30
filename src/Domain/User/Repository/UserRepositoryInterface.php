@@ -8,4 +8,6 @@ use Leos\Domain\User\ValueObject\UserId;
 interface UserRepositoryInterface
 {
     public function get(UserId $uuid): User;
+
+    public function store(User $uuid): void;
 }

@@ -32,7 +32,7 @@ class UserTest extends TestCase
         $user = User::fromEvents(
             new \ArrayIterator(
                 [
-                    UserWasCreated::with($userId, new Username('jorge'), new Email('jorge.arcoma@gmail.io')),
+                    UserWasCreated::with($userId, new Username('jorge'), new Email('jorge.arcoma@gmail.io'), new \DateTimeImmutable()),
                     UserEmailWasChanged::with($userId, new Email('jorge.arcoma@gmail.com'))
                 ]
             )
@@ -71,7 +71,7 @@ class UserTest extends TestCase
 
         $user->changeEmail($email = new Email('lolaso@maximo.io'));
 
-        self::assertSame($user->email(), $email);
+        self::assertEquals($user->email(), $email);
     }
 
     public static function create(): User

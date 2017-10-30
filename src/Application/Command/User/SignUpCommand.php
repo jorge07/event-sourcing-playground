@@ -6,7 +6,7 @@ use Leos\Domain\User\ValueObject\Email;
 use Leos\Domain\User\ValueObject\UserId;
 use Leos\Domain\User\ValueObject\Username;
 
-class SignUpCommand
+class SignUpCommand implements \JsonSerializable
 {
     /**
      * @var UserId
@@ -28,5 +28,14 @@ class SignUpCommand
         $this->uuid = UserId::fromString($uuid);
         $this->username = new Username($username);
         $this->email = new Email($email);
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'uuid' => $this->uuid->toString(),
+            'username' => $this->username->__toString(),
+            'email' => $this->email->__toString()
+        ];
     }
 }

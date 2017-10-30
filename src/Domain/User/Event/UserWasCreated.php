@@ -9,12 +9,13 @@ use Prooph\EventSourcing\AggregateChanged;
 
 class UserWasCreated extends AggregateChanged
 {
-    public static function with(UserId $userId, Username $username, Email $email): self
+    public static function with(UserId $userId, Username $username, Email $email, \DateTimeImmutable $signUpAt): self
     {
         /** @var self $event */
         $event = self::occur($userId->toString(), [
-            'username' => $username,
-            'email' =>  $email
+            'username' => $username->__toString(),
+            'email' =>  $email->__toString(),
+            'signUpAt' =>  $signUpAt->getTimestamp()
         ]);
 
         return $event;
@@ -22,11 +23,16 @@ class UserWasCreated extends AggregateChanged
 
     public function username(): Username
     {
-        return $this->payload['username'];
+        return new Username($this->payload['username']);
     }
 
     public function email(): Email
     {
-        return $this->payload['email'];
+        return new Email($this->payload['email']);
+    }
+
+    public function signUpAt(): \DateTimeImmutable
+    {
+        return \DateTimeImmutable::createFromFormat('U', $this->payload['signUpAt']);
     }
 }
