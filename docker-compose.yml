@@ -9,7 +9,7 @@ services:
       - "80:80"
     volumes:
       - "$PWD/etc/env/dev/nginx/default.conf:/etc/nginx/conf.d/default.conf"
-      - "$PWD/src/UI/API/public/index.php:/app/src/UI/API/public/index.php"
+      - "$PWD/src/UI/API/public/index.php:/app/src/UI/API/Public/index.php"
 
   fpm:
     image: jorge07/alpine-php:7.1-dev-sf
