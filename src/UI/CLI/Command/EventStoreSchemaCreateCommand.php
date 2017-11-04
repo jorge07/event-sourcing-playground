@@ -1,8 +1,8 @@
 <?php
 
-namespace Leos\UI\Cli\Command;
+namespace Leos\UI\CLI\Command;
 
-use Leos\Infrastructure\Persistence\EventStore\EventStoreFactory;
+use Leos\Infrastructure\Shared\Persistence\EventStore\EventStoreFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
