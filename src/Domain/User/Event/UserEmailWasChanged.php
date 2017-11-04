@@ -6,8 +6,13 @@ use Leos\Domain\User\ValueObject\Email;
 use Leos\Domain\User\ValueObject\UserId;
 use Prooph\EventSourcing\AggregateChanged;
 
-class UserEmailWasChanged extends AggregateChanged
+final class UserEmailWasChanged extends AggregateChanged
 {
+    /**
+     * @var Email
+     */
+    private $email;
+
     public static function with(UserId $userId, Email $email): self
     {
         /** @var self $event */
@@ -15,11 +20,18 @@ class UserEmailWasChanged extends AggregateChanged
             'email' => $email->__toString()
         ]);
 
+        $event->email = $email;
+
         return $event;
     }
 
     public function email(): Email
     {
-        return new Email($this->payload['email']);
+        if (null === $this->email) {
+
+            return new Email($this->payload['email']);
+        }
+
+        return $this->email;
     }
 }

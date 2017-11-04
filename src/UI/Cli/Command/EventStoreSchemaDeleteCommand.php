@@ -2,9 +2,9 @@
 
 namespace Leos\UI\Cli\Command;
 
-use Leos\Infrastructure\Persistence\EventStore\EventStoreWrapper;
+use Leos\Infrastructure\Persistence\EventStore\EventStoreFactory;
 
-class EventStoreSchemaDeleteCommand extends EventStoreSchemaCreateCommand
+final class EventStoreSchemaDeleteCommand extends EventStoreSchemaCreateCommand
 {
     protected function configure()
     {
@@ -14,7 +14,7 @@ class EventStoreSchemaDeleteCommand extends EventStoreSchemaCreateCommand
         ;
     }
 
-    protected function apply(EventStoreWrapper $eventStore): void
+    protected function apply(EventStoreFactory $eventStore): void
     {
         $eventStore->deleteSchema();
     }

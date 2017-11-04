@@ -19,6 +19,6 @@ class EmailTest extends TestCase
     {
         $email = new Email('j@j.com');
 
-        self::assertEquals('j@j.com', (string) $email);
+        self::assertSame('j@j.com', (string) $email);
     }
 }

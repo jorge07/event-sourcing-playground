@@ -6,23 +6,23 @@ use Leos\Domain\Shared\Exception\NotFoundException;
 use Leos\Domain\User\Aggregate\User;
 use Leos\Domain\User\Repository\UserRepositoryInterface;
 use Leos\Domain\User\ValueObject\UserId;
-use Leos\Infrastructure\Persistence\EventStore\EventStoreWrapper;
 use Prooph\EventSourcing\Aggregate\AggregateRepository;
 use Prooph\EventSourcing\Aggregate\AggregateType;
 use Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator;
+use Prooph\EventStore\ActionEventEmitterEventStore;
 use Prooph\EventStore\StreamName;
 
-class UserRepository extends AggregateRepository implements UserRepositoryInterface
+final class UserRepository extends AggregateRepository implements UserRepositoryInterface
 {
-    public function __construct(EventStoreWrapper $eventStoreWrapper)
+    public function __construct(ActionEventEmitterEventStore $eventStoreWrapper)
     {
         parent::__construct(
-            $eventStoreWrapper->eventStore(),
+            $eventStoreWrapper,
             AggregateType::fromAggregateRootClass(User::class),
             new AggregateTranslator(),
-            null, //We don't use a snapshot store in the example
+            null,
             new StreamName('event_stream'),
-            false //But we enable the "one-stream-per-aggregate" mode
+            false
         );
     }
 

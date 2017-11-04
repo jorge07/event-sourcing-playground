@@ -2,36 +2,27 @@
 
 namespace Tests\Leos\Infrastructure\User\Persistence;
 
-
 use Leos\Domain\User\ValueObject\Email;
-use Leos\Infrastructure\Persistence\EventStore\EventStoreWrapper;
 use Leos\Infrastructure\User\Persistence\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Tests\Leos\Domain\User\Aggregate\UserTest;
 
 class UserRepositoryTest extends KernelTestCase
 {
-    /** @var EventStoreWrapper */
-    private $eventStore;
-
-    /** @var UserRepository */
+    /** @var UserRepository|null */
     private $userRepo;
 
     protected function setUp()
     {
         self::bootKernel();
 
-        $this->eventStore = static::$kernel->getContainer()->get(EventStoreWrapper::class);
-        $this->userRepo = static::$kernel->getContainer()->get(UserRepository::class);
-
-        $this->eventStore->resetEventStreams();
-        $this->eventStore->resetEvents();
+        $this->userRepo = static::$kernel->getContainer()->get('test.user.repo');
     }
 
     public function tearDown()
     {
         parent::tearDown();
-        $this->eventStore = null;
+
         $this->userRepo = null;
     }
 

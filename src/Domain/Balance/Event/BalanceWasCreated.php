@@ -5,7 +5,7 @@ namespace Leos\Domain\Balance\Event;
 use Money\Money;
 use Prooph\EventSourcing\AggregateChanged;
 
-class BalanceWasCreated extends AggregateChanged
+final class BalanceWasCreated extends AggregateChanged
 {
     public static function new(string $uuid, Money $money): self
     {
@@ -18,9 +18,9 @@ class BalanceWasCreated extends AggregateChanged
         return $event;
     }
 
-    public function user(): string
+    public function userId(): string
     {
-        return $this->payload['user'];
+        return $this->payload['userId'];
     }
 
     public function amount(): Money

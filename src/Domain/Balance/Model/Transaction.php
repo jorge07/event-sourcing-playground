@@ -6,7 +6,7 @@ use Assert\Assertion;
 use Leos\Domain\Balance\ValueObject\TransactionId;
 use Money\Money;
 
-class Transaction
+final class Transaction
 {
     const TYPES_DEPOSIT = 'deposit';
     const TYPES_WITHDRAWAL = 'withdrawal';

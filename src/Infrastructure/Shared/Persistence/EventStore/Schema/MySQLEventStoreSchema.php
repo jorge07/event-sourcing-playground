@@ -1,8 +1,8 @@
 <?php
 
-namespace Leos\Infrastructure\Persistence\EventStore\Schema;
+namespace Leos\Infrastructure\Shared\Persistence\EventStore\Schema;
 
-class MySQLEventStoreSchema
+final class MySQLEventStoreSchema
 {
     /**
      * @var string

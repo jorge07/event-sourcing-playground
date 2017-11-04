@@ -50,8 +50,9 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "test": "vendor/phpunit/phpunit/phpunit",
-        "test-parallel": "find tests/ -name '*Test.php' | ./vendor/liuggio/fastest/fastest -x phpunit.xml.dist 'vendor/phpunit/phpunit/phpunit {};'"
+        "test": "phpunit",
+        "test-parallel": "find tests/ -name '*Test.php' | ./vendor/liuggio/fastest/fastest -x phpunit.xml.dist 'vendor/phpunit/phpunit/phpunit {};'",
+        "phpstan": "phpstan analyse -l 5 src tests"
 
     },
     "conflict": {

@@ -14,7 +14,7 @@ use Prooph\EventSourcing\AggregateChanged;
 use Prooph\EventSourcing\AggregateRoot;
 use Money\Money;
 
-class Balance extends AggregateRoot
+final class Balance extends AggregateRoot
 {
     /**
      * @var BalanceOwnerId

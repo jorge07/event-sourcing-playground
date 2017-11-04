@@ -4,7 +4,7 @@ namespace Leos\Domain\User\ValueObject;
 
 use Assert\Assertion;
 
-class Email
+final class Email
 {
     /**
      * @var string

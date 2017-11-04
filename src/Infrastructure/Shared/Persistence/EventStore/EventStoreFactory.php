@@ -1,12 +1,13 @@
 <?php
 
-namespace Leos\Infrastructure\Persistence\EventStore;
+namespace Leos\Infrastructure\Shared\Persistence\EventStore;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 
-use Leos\Infrastructure\Persistence\EventStore\Schema\MySQLEventStoreSchema;
+use Leos\Infrastructure\Shared\Persistence\EventStore\Config\MysqlEventStoreConfig;
+use Leos\Infrastructure\Shared\Persistence\EventStore\Schema\MySQLEventStoreSchema;
 
 use Prooph\Common\Event\ProophActionEventEmitter;
 use Prooph\Common\Messaging\FQCNMessageFactory;
@@ -16,7 +17,7 @@ use Prooph\EventStore\Pdo\MySqlEventStore;
 use Prooph\EventStore\Pdo\PersistenceStrategy\MySqlSingleStreamStrategy;
 use Prooph\EventStore\StreamName;
 
-class EventStoreWrapper
+final class EventStoreFactory
 {
     /**
      * @var MysqlEventStoreConfig
@@ -47,6 +48,9 @@ class EventStoreWrapper
      */
     private $strategy;
 
+    /**
+     * @var string
+     */
     private $defaultStream = 'event_stream';
 
     /**
@@ -65,16 +69,18 @@ class EventStoreWrapper
         $this->configuration = new Configuration();
         $this->eventStreamsTable = $eventStreamsTable;
         $this->eventStoreSchema = new MySQLEventStoreSchema($eventStreamsTable);
-        $this->connection = DriverManager::getConnection(
+        /** @var \PDO $connection */
+        $connection = DriverManager::getConnection(
             $this->config->dbalConfig(),
             $this->configuration
         )->getWrappedConnection();
-        
+
+        $this->connection = $connection;
         $this->strategy = new MySqlSingleStreamStrategy();
-        
+
         $this->eventStore = new MySqlEventStore(
             new FQCNMessageFactory(),
-            $this->connection,
+            $connection,
             $this->strategy,
             100,
             $this->eventStreamsTable,
@@ -82,6 +88,27 @@ class EventStoreWrapper
         );
         
         $this->actionEventEmitterStore = $this->createActionEventEmitterEventStore($this->eventStore);
+    }
+
+    private function createActionEventEmitterEventStore(EventStore $eventStore): ActionEventEmitterEventStore
+    {
+        return $this->actionEventEmitterStore = new ActionEventEmitterEventStore(
+            $eventStore,
+            new ProophActionEventEmitter([
+                ActionEventEmitterEventStore::EVENT_APPEND_TO,
+                ActionEventEmitterEventStore::EVENT_CREATE,
+                ActionEventEmitterEventStore::EVENT_LOAD,
+                ActionEventEmitterEventStore::EVENT_LOAD_REVERSE,
+                ActionEventEmitterEventStore::EVENT_DELETE,
+                ActionEventEmitterEventStore::EVENT_HAS_STREAM,
+                ActionEventEmitterEventStore::EVENT_FETCH_STREAM_METADATA,
+                ActionEventEmitterEventStore::EVENT_UPDATE_STREAM_METADATA,
+                ActionEventEmitterEventStore::EVENT_FETCH_STREAM_NAMES,
+                ActionEventEmitterEventStore::EVENT_FETCH_STREAM_NAMES_REGEX,
+                ActionEventEmitterEventStore::EVENT_FETCH_CATEGORY_NAMES,
+                ActionEventEmitterEventStore::EVENT_FETCH_CATEGORY_NAMES_REGEX,
+            ])
+        );
     }
 
     public function createSchema(): void
@@ -126,27 +153,6 @@ class EventStoreWrapper
     public function eventStore(): MySqlEventStore
     {
         return $this->eventStore;
-    }
-
-    protected function createActionEventEmitterEventStore(EventStore $eventStore): ActionEventEmitterEventStore
-    {
-        return new ActionEventEmitterEventStore(
-            $eventStore,
-            new ProophActionEventEmitter([
-                ActionEventEmitterEventStore::EVENT_APPEND_TO,
-                ActionEventEmitterEventStore::EVENT_CREATE,
-                ActionEventEmitterEventStore::EVENT_LOAD,
-                ActionEventEmitterEventStore::EVENT_LOAD_REVERSE,
-                ActionEventEmitterEventStore::EVENT_DELETE,
-                ActionEventEmitterEventStore::EVENT_HAS_STREAM,
-                ActionEventEmitterEventStore::EVENT_FETCH_STREAM_METADATA,
-                ActionEventEmitterEventStore::EVENT_UPDATE_STREAM_METADATA,
-                ActionEventEmitterEventStore::EVENT_FETCH_STREAM_NAMES,
-                ActionEventEmitterEventStore::EVENT_FETCH_STREAM_NAMES_REGEX,
-                ActionEventEmitterEventStore::EVENT_FETCH_CATEGORY_NAMES,
-                ActionEventEmitterEventStore::EVENT_FETCH_CATEGORY_NAMES_REGEX,
-            ])
-        );
     }
 
     public function actionEventEmitterStore(): ActionEventEmitterEventStore

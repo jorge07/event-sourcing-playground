@@ -2,7 +2,7 @@
 
 namespace Leos\UI\Cli\Command;
 
-use Leos\Infrastructure\Persistence\EventStore\EventStoreWrapper;
+use Leos\Infrastructure\Persistence\EventStore\EventStoreFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +19,7 @@ class EventStoreSchemaCreateCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var EventStoreWrapper $eventStore */
+        /** @var EventStoreFactory $eventStore */
         $eventStore = $this->getContainer()->get('event_store');
 
         try {
@@ -38,7 +38,7 @@ class EventStoreSchemaCreateCommand extends ContainerAwareCommand
         $output->writeln('<info>Done.</info>');
     }
 
-    protected function apply(EventStoreWrapper $eventStore): void
+    protected function apply(EventStoreFactory $eventStore): void
     {
         $eventStore->createSchema();
     }

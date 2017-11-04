@@ -4,11 +4,10 @@ namespace Leos\Domain\Balance\Event;
 
 use Leos\Domain\Balance\Model\Transaction;
 use Leos\Domain\Balance\ValueObject\TransactionId;
-use Leos\Domain\Shared\ValueObject\AggregateRootId;
 use Money\Money;
 use Prooph\EventSourcing\AggregateChanged;
 
-class TransactionWasPerform extends AggregateChanged
+final class TransactionWasPerform extends AggregateChanged
 {
     public static function deposit(string $uuid, TransactionId $transactionId, Money $amount)
     {

@@ -35,6 +35,6 @@ class UsernameTest extends TestCase
 
         $username = new Username($usernameString);
 
-        self::assertEquals($usernameString, (string) $username);
+        self::assertSame($usernameString, (string) $username);
     }
 }

@@ -17,10 +17,11 @@ class UserWasCreatedTest extends TestCase
             UserId::new(),
             $username = new Username('jorge'),
             $email = new Email('j@j.com'),
-            new \DateTimeImmutable()
+            $signUpAt = new \DateTimeImmutable()
         );
 
-        self::assertEquals($username, $event->username());
-        self::assertEquals($email, $event->email());
+        self::assertSame($username, $event->username());
+        self::assertSame($email, $event->email());
+        self::assertSame($signUpAt, $event->signUpAt());
     }
 }

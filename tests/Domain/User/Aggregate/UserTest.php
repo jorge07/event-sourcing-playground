@@ -71,7 +71,7 @@ class UserTest extends TestCase
 
         $user->changeEmail($email = new Email('lolaso@maximo.io'));
 
-        self::assertEquals($user->email(), $email);
+        self::assertSame($user->email(), $email);
     }
 
     public static function create(): User

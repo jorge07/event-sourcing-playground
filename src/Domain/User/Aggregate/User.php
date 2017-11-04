@@ -11,7 +11,7 @@ use Leos\Domain\User\ValueObject\Username;
 use Prooph\EventSourcing\AggregateChanged;
 use Prooph\EventSourcing\AggregateRoot;
 
-class User extends AggregateRoot
+final class User extends AggregateRoot
 {
     /**
      * @var UserId

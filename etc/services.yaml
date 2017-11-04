@@ -24,22 +24,25 @@ services:
 
 ######  Infrastructure   ######
 
-    Leos\Infrastructure\Persistence\EventStore\MysqlEventStoreConfig:
+    Leos\Infrastructure\Shared\Persistence\EventStore\Config\MysqlEventStoreConfig:
+        autowire: false
         arguments:
-          - "%event_store_host%"
-          - "%event_store_user%"
-          - "%event_store_pass%"
-          - "%event_store_db%"
-          - "event_stream"
+          $host: "%env(EVENT_STORE_HOST)%"
+          $user: "%env(EVENT_STORE_USER)%"
+          $pass: "%env(EVENT_STORE_PASS)%"
+          $database: "%env(EVENT_STORE_DB)%"
+          $streamsTable: "event_stream"
 
-    Leos\Infrastructure\Persistence\EventStore\EventStoreWrapper:
-        public: true
+    Leos\Infrastructure\Shared\Persistence\EventStore\EventStoreFactory: ~
+
+    Prooph\EventStore\ActionEventEmitterEventStore:
+        factory: [ '@Leos\Infrastructure\Shared\Persistence\EventStore\EventStoreFactory', 'actionEventEmitterStore']
 
     Leos\Domain\User\Repository\UserRepositoryInterface: '@Leos\Infrastructure\User\Persistence\UserRepository'
 
     Leos\Infrastructure\:
-        resource: '../src/Infrastructure/*/Persistence/'
-        public: true
+        resource: '../src/Infrastructure/'
+        exclude: '../src/Infrastructure/**/{Config}'
 
 ######        UI         ######
 
@@ -52,8 +55,7 @@ services:
         tags:
           - { name: kernel.event_listener, event: kernel.exception }
 
-
-    Leos\UI\Cli\:
-        resource: '../src/UI/Cli/**/*Command'
+    Leos\UI\Cli\Command\:
+        resource: '../src/UI/Cli/Command'
         tags:
               - { name: "console.command" }

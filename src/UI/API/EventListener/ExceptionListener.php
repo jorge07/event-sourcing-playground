@@ -17,18 +17,16 @@ final class ExceptionListener
     {
         $exception = $event->getException();
 
-        $event->getResponse();
-
-        $code = $this->exceptionMapper($exception);
-
-        $response = JsonResponse::create(
-            [
-                'message' => $exception->getMessage(),
-            ],
-            $code
-        );
+        $response = $this->createResponseFromException($exception);
 
         $event->setResponse($response);
+    }
+
+    private function createResponseFromException(\Exception $exception): JsonResponse
+    {
+        $code = $this->exceptionMapper($exception);
+
+        return JsonResponse::create(['message' => $exception->getMessage()], $code);
     }
 
     private function exceptionMapper(\Exception $exception): int
