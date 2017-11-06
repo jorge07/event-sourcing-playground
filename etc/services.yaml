@@ -55,7 +55,7 @@ services:
         tags:
           - { name: kernel.event_listener, event: kernel.exception }
 
-    Leos\UI\Cli\Command\:
+    Leos\UI\CLI\Command\:
         resource: '../src/UI/CLI/Command'
         tags:
               - { name: "console.command" }

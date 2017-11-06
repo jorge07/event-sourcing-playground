@@ -3,12 +3,24 @@
 namespace Leos\UI\CLI\Command;
 
 use Leos\Infrastructure\Shared\Persistence\EventStore\EventStoreFactory;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class EventStoreSchemaCreateCommand extends ContainerAwareCommand
+class EventStoreSchemaCreateCommand extends Command
 {
+    /**
+     * @var EventStoreFactory
+     */
+    protected $eventStoreFactory;
+
+    public function __construct(EventStoreFactory $eventStoreFactory)
+    {
+        parent::__construct();
+
+        $this->eventStoreFactory = $eventStoreFactory;
+    }
+
     protected function configure()
     {
         $this
@@ -19,16 +31,13 @@ class EventStoreSchemaCreateCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var EventStoreFactory $eventStore */
-        $eventStore = $this->getContainer()->get('event_store');
-
         try {
 
-            $this->apply($eventStore);
+            $this->apply();
 
         } catch (\Exception $exception) {
 
-            $output->writeln('<error>Impossible to create schema</error>');
+            $output->writeln('<error>Impossible to perform schema operation</error>');
             $output->writeln('<error>Reason:</error>');
             $output->writeln('   ' . $exception->getMessage());
 
@@ -38,9 +47,9 @@ class EventStoreSchemaCreateCommand extends ContainerAwareCommand
         $output->writeln('<info>Done.</info>');
     }
 
-    protected function apply(EventStoreFactory $eventStore): void
+    protected function apply(): void
     {
-        $eventStore->createSchema();
+        $this->eventStoreFactory->createSchema();
     }
 
 }
